@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="12" fill="#0a0a0a"/>
+  <g transform="translate(12, 20)">
+    <!-- Gun body -->
+    <rect x="8" y="8" width="24" height="8" rx="2" fill="#ff4444"/>
+    <rect x="28" y="10" width="8" height="4" rx="1" fill="#ff4444"/>
+    <!-- Barrel -->
+    <rect x="36" y="11" width="4" height="2" fill="#cc3333"/>
+    <!-- Trigger guard -->
+    <path d="M 8 16 L 8 20 L 12 20 L 12 16" stroke="#ff4444" stroke-width="2" fill="none"/>
+    <!-- Grip -->
+    <rect x="4" y="16" width="8" height="8" rx="1" fill="#ff4444"/>
+    <!-- Sight -->
+    <rect x="30" y="6" width="2" height="4" fill="#ffaa00"/>
+    <!-- Crosshair accent -->
+    <circle cx="20" cy="4" r="2" stroke="#ffaa00" stroke-width="1" fill="none"/>
+    <line x1="20" y1="1" x2="20" y2="3" stroke="#ffaa00" stroke-width="1"/>
+    <line x1="20" y1="5" x2="20" y2="7" stroke="#ffaa00" stroke-width="1"/>
+    <line x1="17" y1="4" x2="19" y2="4" stroke="#ffaa00" stroke-width="1"/>
+    <line x1="21" y1="4" x2="23" y2="4" stroke="#ffaa00" stroke-width="1"/>
+  </g>
+</svg>
