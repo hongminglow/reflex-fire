@@ -115,7 +115,7 @@ export function playMiss() {
   osc.stop(t + 0.3);
 }
 
-// Background ambient loop — dark drone with melody
+// Background music — upbeat and energetic
 let bgGain = null;
 let bgNodes = [];
 
@@ -123,56 +123,76 @@ export function startBackground() {
   const c = resume();
   stopBackground();
 
-  console.log('Creating background music nodes...');
+  console.log('Creating upbeat background music...');
 
   const masterGain = c.createGain();
   masterGain.gain.setValueAtTime(0, c.currentTime);
-  masterGain.gain.linearRampToValueAtTime(0.35, c.currentTime + 1); // Faster fade-in, louder
+  masterGain.gain.linearRampToValueAtTime(0.3, c.currentTime + 0.5);
   masterGain.connect(c.destination);
   bgGain = masterGain;
 
-  // Bass drone
-  const bass = c.createOscillator();
-  bass.type = 'sawtooth';
-  bass.frequency.value = 55; // A1
-  const bassGain = c.createGain();
-  bassGain.gain.value = 0.3;
-  bass.connect(bassGain);
-  bassGain.connect(masterGain);
-  bass.start();
-  bgNodes.push(bass);
+  // Upbeat melody notes (C major scale - happy sound)
+  const melodyNotes = [523.25, 587.33, 659.25, 698.46, 783.99]; // C5, D5, E5, F5, G5
+  const melodyPattern = [0, 2, 4, 2, 1, 3, 4, 3]; // Pattern using scale degrees
+  
+  let noteIndex = 0;
+  const playNote = () => {
+    if (!bgGain) return;
+    
+    const osc = c.createOscillator();
+    osc.type = 'square';
+    osc.frequency.value = melodyNotes[melodyPattern[noteIndex % melodyPattern.length]];
+    
+    const noteGain = c.createGain();
+    noteGain.gain.setValueAtTime(0.15, c.currentTime);
+    noteGain.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 0.3);
+    
+    osc.connect(noteGain);
+    noteGain.connect(masterGain);
+    osc.start(c.currentTime);
+    osc.stop(c.currentTime + 0.3);
+    
+    noteIndex++;
+    if (bgGain) setTimeout(playNote, 250); // Play next note
+  };
+  playNote();
 
-  // Mid drone with LFO
-  const mid = c.createOscillator();
-  mid.type = 'sine';
-  mid.frequency.value = 110; // A2
-  const lfo = c.createOscillator();
-  lfo.type = 'sine';
-  lfo.frequency.value = 0.2;
-  const lfoGain = c.createGain();
-  lfoGain.gain.value = 5;
-  lfo.connect(lfoGain);
-  lfoGain.connect(mid.frequency);
-  const midGain = c.createGain();
-  midGain.gain.value = 0.2;
-  mid.connect(midGain);
-  midGain.connect(masterGain);
-  mid.start();
-  lfo.start();
-  bgNodes.push(mid, lfo);
+  // Bass line - bouncy rhythm
+  const bassNotes = [130.81, 164.81, 196.00]; // C3, E3, G3
+  let bassIndex = 0;
+  const playBass = () => {
+    if (!bgGain) return;
+    
+    const bass = c.createOscillator();
+    bass.type = 'sine';
+    bass.frequency.value = bassNotes[bassIndex % bassNotes.length];
+    
+    const bassGain = c.createGain();
+    bassGain.gain.setValueAtTime(0.2, c.currentTime);
+    bassGain.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 0.4);
+    
+    bass.connect(bassGain);
+    bassGain.connect(masterGain);
+    bass.start(c.currentTime);
+    bass.stop(c.currentTime + 0.4);
+    
+    bassIndex++;
+    if (bgGain) setTimeout(playBass, 500); // Bass rhythm
+  };
+  playBass();
 
-  // Pulsing pad
+  // Bright pad for atmosphere
   const pad = c.createOscillator();
   pad.type = 'triangle';
-  pad.frequency.value = 220; // A3
+  pad.frequency.value = 523.25; // C5
   const padLfo = c.createOscillator();
   padLfo.type = 'sine';
   padLfo.frequency.value = 0.5;
   const padLfoGain = c.createGain();
-  padLfoGain.gain.value = 0.15;
+  padLfoGain.gain.value = 0.1;
   padLfo.connect(padLfoGain);
   const padGain = c.createGain();
-  padGain.gain.value = 0.15;
+  padGain.gain.value = 0.08;
   padLfoGain.connect(padGain.gain);
   pad.connect(padGain);
   padGain.connect(masterGain);
@@ -180,26 +200,7 @@ export function startBackground() {
   padLfo.start();
   bgNodes.push(pad, padLfo);
 
-  // High shimmer
-  const shimmer = c.createOscillator();
-  shimmer.type = 'sine';
-  shimmer.frequency.value = 880; // A5
-  const shimmerLfo = c.createOscillator();
-  shimmerLfo.type = 'sine';
-  shimmerLfo.frequency.value = 0.3;
-  const shimmerLfoGain = c.createGain();
-  shimmerLfoGain.gain.value = 10;
-  shimmerLfo.connect(shimmerLfoGain);
-  shimmerLfoGain.connect(shimmer.frequency);
-  const shimmerGain = c.createGain();
-  shimmerGain.gain.value = 0.1;
-  shimmer.connect(shimmerGain);
-  shimmerGain.connect(masterGain);
-  shimmer.start();
-  shimmerLfo.start();
-  bgNodes.push(shimmer, shimmerLfo);
-
-  console.log('Background music nodes created and started - should be audible now');
+  console.log('Upbeat background music started!');
 }
 
 export function stopBackground() {

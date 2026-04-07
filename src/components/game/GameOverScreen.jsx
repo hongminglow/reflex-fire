@@ -1,6 +1,16 @@
 import { motion } from 'framer-motion';
 
 export default function GameOverScreen({ score, highScore, isNewHighScore, stats, onRestart, onMenu }) {
+  const handleMenu = () => {
+    onMenu();
+    // Music will start automatically when StartScreen mounts
+  };
+
+  const handleRestart = () => {
+    onRestart();
+    // No music during gameplay
+  };
+
   return (
     <div className="fixed inset-0 bg-background flex items-center justify-center overflow-hidden">
       {/* Background effects */}
@@ -73,7 +83,7 @@ export default function GameOverScreen({ score, highScore, isNewHighScore, stats
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={onRestart}
+            onClick={handleRestart}
             className="px-8 py-3 bg-primary text-primary-foreground rounded-lg font-semibold shadow-lg shadow-primary/30"
           >
             PLAY AGAIN
@@ -81,7 +91,7 @@ export default function GameOverScreen({ score, highScore, isNewHighScore, stats
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={onMenu}
+            onClick={handleMenu}
             className="px-8 py-3 bg-secondary text-secondary-foreground rounded-lg font-semibold"
           >
             MENU

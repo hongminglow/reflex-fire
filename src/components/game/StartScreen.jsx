@@ -1,15 +1,27 @@
 import { motion } from 'framer-motion';
-import { startBackground } from '../../lib/sounds';
+import { useEffect } from 'react';
+import { startBackground, stopBackground } from '../../lib/sounds';
 
 export default function StartScreen({ onStart, highScore }) {
-  const handleStart = () => {
-    console.log('Starting game and background music...');
+  // Start music when menu loads
+  useEffect(() => {
+    console.log('Menu loaded - starting background music...');
     try {
       startBackground();
       console.log('Background music started successfully');
     } catch (error) {
       console.error('Failed to start background music:', error);
     }
+    
+    // Stop music when leaving menu
+    return () => {
+      console.log('Leaving menu - stopping music');
+      stopBackground();
+    };
+  }, []);
+
+  const handleStart = () => {
+    stopBackground(); // Stop music when entering game
     onStart();
   };
 
