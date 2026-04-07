@@ -2,11 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 
 const TARGET_COLORS = [
-  'bg-red-500',
-  'bg-blue-500',
-  'bg-green-500',
-  'bg-yellow-500',
-  'bg-purple-500',
+  'text-red-500',
+  'text-orange-500',
+  'text-yellow-500',
+  'text-green-500',
+  'text-purple-500',
 ];
 
 export default function Target({ target, onHit, onMiss }) {
@@ -33,15 +33,15 @@ export default function Target({ target, onHit, onMiss }) {
     }
   };
 
-  const size = 40 + target.size * 20;
+  const size = 60 + target.size * 30;
   const progress = timeLeft / target.duration;
 
   return (
     <motion.div
-      initial={{ scale: 0, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      exit={{ scale: 0, opacity: 0 }}
-      transition={{ duration: 0.15 }}
+      initial={{ scale: 0, opacity: 0, rotate: -180 }}
+      animate={{ scale: 1, opacity: 1, rotate: 0 }}
+      exit={{ scale: 0, opacity: 0, rotate: 180 }}
+      transition={{ duration: 0.2, type: 'spring' }}
       className="fixed cursor-pointer z-20"
       style={{
         left: `${target.x}%`,
@@ -78,14 +78,24 @@ export default function Target({ target, onHit, onMiss }) {
         />
       </svg>
 
-      {/* Target body */}
-      <div
-        className={`rounded-full ${TARGET_COLORS[target.type]} shadow-lg shadow-primary/20`}
-        style={{ width: size, height: size }}
-      >
-        <div className="w-full h-full rounded-full bg-white/20 flex items-center justify-center">
-          <div className="w-1/3 h-1/3 rounded-full bg-white/40" />
-        </div>
+      {/* Skeleton Icon */}
+      <div className={`${TARGET_COLORS[target.type]} drop-shadow-lg`} style={{ width: size, height: size }}>
+        <svg viewBox="0 0 24 24" fill="currentColor" className="w-full h-full">
+          {/* Skull */}
+          <path d="M12 2C8.5 2 5.5 4.5 5.5 8c0 2.5 1 4.5 2 5.5v2c0 .5.5 1 1 1h1v2.5c0 .5.5 1 1 1h1c.5 0 1-.5 1-1V16.5h1c.5 0 1-.5 1-1v-2c1-1 2-3 2-5.5 0-3.5-3-6-6.5-6z"/>
+          {/* Eye sockets */}
+          <circle cx="9" cy="9" r="1.5" fill="#000"/>
+          <circle cx="15" cy="9" r="1.5" fill="#000"/>
+          {/* Nose */}
+          <path d="M12 11l-1 1.5h2z" fill="#000"/>
+          {/* Teeth */}
+          <rect x="9" y="13" width="1" height="1.5" fill="#000"/>
+          <rect x="11" y="13" width="1" height="1.5" fill="#000"/>
+          <rect x="13" y="13" width="1" height="1.5" fill="#000"/>
+          <rect x="15" y="13" width="1" height="1.5" fill="#000"/>
+          {/* Spine/Ribs */}
+          <path d="M11 17h2v1h-2z M10 18.5h4v.5h-4z M10.5 20h3v.5h-3z" fill="currentColor" opacity="0.7"/>
+        </svg>
       </div>
     </motion.div>
   );
